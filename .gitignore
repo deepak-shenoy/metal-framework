@@ -8,6 +8,8 @@
 
 # UNIX metal-cmake
 **/metal-cmake            # specific file
+**/internal-docs          # internal proprietary
+
 **/cmake_install.cmake
 **/Testing
 **/Makefile
