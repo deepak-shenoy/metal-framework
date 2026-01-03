@@ -30,11 +30,11 @@ private:
     MTL::CommandQueue* _pCommandQueue;
 };
 
-class MyMTKViewDelegate : public MTK::ViewDelegate
+class ViewDelegate : public MTK::ViewDelegate
 {
 public:
-    MyMTKViewDelegate( MTL::Device* pDevice );
-    virtual ~MyMTKViewDelegate() override;
+    ViewDelegate( MTL::Device* pDevice );
+    virtual ~ViewDelegate() override;
     virtual void drawInMTKView( MTK::View* pView ) override;
 
 private:
@@ -56,7 +56,7 @@ private:
     NS::Window* _pWindow;
     MTK::View* _pMtkView;
     MTL::Device* _pDevice;
-    MyMTKViewDelegate* _pViewDelegate = nullptr;
+    ViewDelegate* _pViewDelegate = nullptr;
 };
 
 #pragma endregion Declarations }
@@ -152,7 +152,7 @@ void AppDelegate::applicationDidFinishLaunching( NS::Notification* pNotification
     _pMtkView->setColorPixelFormat( MTL::PixelFormat::PixelFormatBGRA8Unorm_sRGB );
     _pMtkView->setClearColor( MTL::ClearColor::Make( 1.0, 0.0, 0.0, 1.0 ) );
 
-    _pViewDelegate = new MyMTKViewDelegate( _pDevice );
+    _pViewDelegate = new ViewDelegate( _pDevice );
     _pMtkView->setDelegate( _pViewDelegate );
 
     _pWindow->setContentView( _pMtkView );
@@ -175,18 +175,16 @@ bool AppDelegate::applicationShouldTerminateAfterLastWindowClosed( NS::Applicati
 #pragma mark - ViewDelegate
 #pragma region ViewDelegate {
 
-MyMTKViewDelegate::MyMTKViewDelegate( MTL::Device* pDevice )
-: MTK::ViewDelegate()
-, _pRenderer( new Renderer( pDevice ) )
+ViewDelegate::ViewDelegate( MTL::Device* pDevice ) : MTK::ViewDelegate(), _pRenderer( new Renderer( pDevice ) )
 {
 }
 
-MyMTKViewDelegate::~MyMTKViewDelegate()
+ViewDelegate::~ViewDelegate()
 {
     delete _pRenderer;
 }
 
-void MyMTKViewDelegate::drawInMTKView( MTK::View* pView )
+void ViewDelegate::drawInMTKView( MTK::View* pView )
 {
     _pRenderer->draw( pView );
 }

@@ -37,3 +37,97 @@ Here is the code that implements some of this framework:
 NS::Application* application = NS::Application::sharedApplication();
     application->setDelegate( &del );
 ```
+
+The application delegate manages a window, view, device and a view delegate.  A delegate gets
+a message passed to the application.
+
+```c++
+class AppDelegate : public NS::ApplicationDelegate
+{
+public:
+    ~AppDelegate();
+
+    NS::Menu* createMenuBar();
+
+    virtual void applicationWillFinishLaunching( NS::Notification* pNotification ) override;
+    virtual void applicationDidFinishLaunching( NS::Notification* pNotification ) override;
+    virtual bool applicationShouldTerminateAfterLastWindowClosed( NS::Application* pSender ) override;
+
+private:
+    NS::Window* _pWindow;
+    MTK::View* _pMtkView;
+    MTL::Device* _pDevice;
+    MyMTKViewDelegate* _pViewDelegate = nullptr;
+};
+```
+
+Here we have defined the size and position of the window:
+
+```c++
+void AppDelegate::applicationDidFinishLaunching( NS::Notification* pNotification )
+{
+    CGRect frame = (CGRect){ {100.0, 100.0}, {512.0, 512.0} };
+
+    _pWindow = NS::Window::alloc()->init(
+        frame,
+        NS::WindowStyleMaskClosable|NS::WindowStyleMaskTitled,
+        NS::BackingStoreBuffered,
+        false );
+
+    _pDevice = MTL::CreateSystemDefaultDevice();
+
+    _pMtkView = MTK::View::alloc()->init( frame, _pDevice );
+    _pMtkView->setColorPixelFormat( MTL::PixelFormat::PixelFormatBGRA8Unorm_sRGB );
+    _pMtkView->setClearColor( MTL::ClearColor::Make( 1.0, 0.0, 0.0, 1.0 ) );
+
+    _pViewDelegate = new ViewDelegate( _pDevice );
+    _pMtkView->setDelegate( _pViewDelegate );
+
+    _pWindow->setContentView( _pMtkView );
+    _pWindow->setTitle( NS::String::string( "00 - Window", NS::StringEncoding::UTF8StringEncoding ) );
+
+    _pWindow->makeKeyAndOrderFront( nullptr );
+
+    NS::Application* pApp = reinterpret_cast< NS::Application* >( pNotification->object() );
+    pApp->activateIgnoringOtherApps( true );
+}
+```
+
+Note the following line that creates the view delegate `_pViewDelegate = new ViewDelegate( _pDevice )` 
+
+Functions within the `ViewDelegate`:
+
+```c++
+ViewDelegate::ViewDelegate( MTL::Device* pDevice ) : MTK::ViewDelegate(), _pRenderer( new Renderer( pDevice ) )
+{
+}
+
+ViewDelegate::~ViewDelegate()
+{
+    delete _pRenderer;
+}
+
+void ViewDelegate::drawInMTKView( MTK::View* pView )
+{
+    _pRenderer->draw( pView );
+}
+```
+
+The renderer is defined as:
+
+```c++
+class Renderer
+{
+public:
+    Renderer( MTL::Device* pDevice );
+    ~Renderer();
+    void draw( MTK::View* pView );
+
+private:
+    MTL::Device* _pDevice;
+    MTL::CommandQueue* _pCommandQueue;
+};
+```
+
+Note that the `CommandQueue` contains all the drawing commands that will be sent to the
+GPU.  
