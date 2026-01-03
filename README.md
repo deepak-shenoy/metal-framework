@@ -137,3 +137,5 @@ Renderer::Renderer(MTL::Device* pDevice ): pDevice( pDevice->retain()) {
     pCommandQueue = pDevice->newCommandQueue();
 }
 ```
+The command queue is made up of objects from the command buffer.  You can have more than one
+command queue per device for different commands like rendering.
