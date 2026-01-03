@@ -18,16 +18,15 @@
 
 #pragma region Declarations {
 
-class Renderer
-{
+class Renderer {
 public:
     Renderer( MTL::Device* pDevice );
     ~Renderer();
     void draw( MTK::View* pView );
 
 private:
-    MTL::Device* _pDevice;
-    MTL::CommandQueue* _pCommandQueue;
+    MTL::Device* pDevice;
+    MTL::CommandQueue* pCommandQueue;
 };
 
 class ViewDelegate : public MTK::ViewDelegate
@@ -195,23 +194,21 @@ void ViewDelegate::drawInMTKView( MTK::View* pView )
 #pragma mark - Renderer
 #pragma region Renderer {
 
-Renderer::Renderer( MTL::Device* pDevice )
-: _pDevice( pDevice->retain() )
-{
-    _pCommandQueue = _pDevice->newCommandQueue();
+Renderer::Renderer(MTL::Device* pDevice ): pDevice( pDevice->retain()) {
+    pCommandQueue = pDevice->newCommandQueue();
 }
 
 Renderer::~Renderer()
 {
-    _pCommandQueue->release();
-    _pDevice->release();
+    pCommandQueue->release();
+    pDevice->release();
 }
 
 void Renderer::draw( MTK::View* pView )
 {
     NS::AutoreleasePool* pPool = NS::AutoreleasePool::alloc()->init();
 
-    MTL::CommandBuffer* pCmd = _pCommandQueue->commandBuffer();
+    MTL::CommandBuffer* pCmd = pCommandQueue->commandBuffer();
     MTL::RenderPassDescriptor* pRpd = pView->currentRenderPassDescriptor();
     MTL::RenderCommandEncoder* pEnc = pCmd->renderCommandEncoder( pRpd );
     pEnc->endEncoding();

@@ -130,4 +130,10 @@ private:
 ```
 
 Note that the `CommandQueue` contains all the drawing commands that will be sent to the
-GPU.  
+GPU.  This is created in our constructor:
+
+```c++
+Renderer::Renderer(MTL::Device* pDevice ): pDevice( pDevice->retain()) {
+    pCommandQueue = pDevice->newCommandQueue();
+}
+```
