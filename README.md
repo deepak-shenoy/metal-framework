@@ -21,10 +21,19 @@ The application delegate is our controller:
     AppDelegate del;
 ```
 ## Metal Architecture
+Top level control will be a Next Step application.  
 ![0500-metal-01-arch.jpg](.artifacts/docs/img/0500-metal-01-arch.jpg)
-Top level control will be a next step application.  To add our own behaviour
-to that application a delegate is needed where we can apply changes.  Metal device abstracts all the things
+To add our own behaviour
+to that application a (Next Step) delegate is needed where we can apply changes.  Metal device abstracts all the things
 that we can do with our graphical device (like a logical device in Vulkan).
-Next step window.  Metal kit is a developer aid.
-The metal view kit delegate is another delegate that will handle all the drawing.  
-There is a custom renderer class where the rendering takes place.
+Other objects are also created like the Next Step Window.  Metal Kit is a developer aid to help simplify
+the development process.
+Another delegate called the Metal View Kit Delegate will handle all the drawing.  
+There is a custom renderer class where most of the rendering will take place.
+
+Here is the code that implements some of this framework:
+
+```c++
+NS::Application* application = NS::Application::sharedApplication();
+    application->setDelegate( &del );
+```

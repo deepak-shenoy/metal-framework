@@ -66,9 +66,9 @@ int main() {
 
     AppDelegate del;
 
-    NS::Application* pSharedApplication = NS::Application::sharedApplication();
-    pSharedApplication->setDelegate( &del );
-    pSharedApplication->run();
+    NS::Application* application = NS::Application::sharedApplication();
+    application->setDelegate( &del );
+    application->run();
 
     pAutoreleasePool->release();
 
