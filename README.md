@@ -1,5 +1,12 @@
 # Metal Framework
 
+# Metal with C++
+https://developer.apple.com/metal/cpp/
+
+https://developer.apple.com/documentation/Metal/rendering-a-scene-with-deferred-lighting-in-c++
+
+![0050-apple-demo.jpg](.artifacts/docs/img/0050-apple-demo.jpg)
+
 ### Initial Window
 ![0010-initial-window.jpg](.artifacts/docs/img/0010-initial-window.jpg)
 
@@ -138,4 +145,6 @@ Renderer::Renderer(MTL::Device* pDevice ): pDevice( pDevice->retain()) {
 }
 ```
 The command queue is made up of objects from the command buffer.  You can have more than one
-command queue per device for different commands like rendering.
+command queue per device for different commands like rendering.  The `RenderPassDescriptor` describes
+all the resources that will be accessed or modified (read or written too). The `RenderCommandEncoder` is responsible
+for recording drawing commands.
