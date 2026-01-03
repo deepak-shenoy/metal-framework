@@ -8,5 +8,7 @@ cmake_minimum_required(VERSION 4.0)
 project(metal_framework)
 
 set(CMAKE_CXX_STANDARD 20)
+add_subdirectory(metal-cmake)
 
 add_executable(metal_framework main.cpp)
+target_link_libraries(metal_framework METAL_CPP)

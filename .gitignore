@@ -3,6 +3,17 @@
 # January 2026
 #
 
+# Clion CMake
 **/cmake-build-debug/
+
+# UNIX metal-cmake
+**/metal-cmake            # specific file
+**/cmake_install.cmake
+**/Testing
+**/Makefile
+**/.cmake
+**/CMakeFiles
+**/CMakeCache.txt
+
 **/.idea
 **/.DS_Store
